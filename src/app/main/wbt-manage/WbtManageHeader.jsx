@@ -30,7 +30,7 @@ function WbtManageHeader() {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/wbt-profile-edit"
+						to="/wbt-profile"
 						size={isMobile ? 'small' : 'medium'}
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:pencil</FuseSvgIcon>

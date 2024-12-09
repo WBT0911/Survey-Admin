@@ -19,25 +19,6 @@ function WbtCustomerHeader() {
 				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Customer</Typography>
 			</motion.span>
 
-			<div className="flex flex-1 items-center justify-end space-x-8">
-				<motion.div
-					className="flex flex-grow-0"
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-				>
-					<Button
-						className=""
-						variant="contained"
-						color="secondary"
-						component={NavLinkAdapter}
-						to="/wbt-profile-edit"
-						size={isMobile ? 'small' : 'medium'}
-					>
-						<FuseSvgIcon size={20}>heroicons-outline:pencil</FuseSvgIcon>
-						<span className="mx-4 sm:mx-8">Show My Profile</span>
-					</Button>
-				</motion.div>
-			</div>
 		</div>
 	);
 }

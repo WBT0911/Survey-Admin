@@ -107,7 +107,7 @@ function WbtManageTable() {
 				]}
 				renderTopToolbarCustomActions={({ table }) => {
 					const { rowSelection } = table.getState();
-
+					const selectedRows = Object.keys(rowSelection).map(id => table.getRow(id)); 
 					if (Object.keys(rowSelection).length === 0) {
 						return null;
 					}
@@ -117,7 +117,8 @@ function WbtManageTable() {
 							variant="contained"
 							size="small"
 							onClick={() => {
-								deleteSeletedUsers(selectedRows.map((row) => row.original.email));
+								const emails = selectedRows.map(row => row.original.email); // Get selected emails
+                                deleteSelectedUsers(emails);
 							}}
 							className="flex shrink min-w-40 ltr:mr-8 rtl:ml-8"
 							color="secondary"

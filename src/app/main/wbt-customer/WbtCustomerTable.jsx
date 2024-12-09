@@ -90,7 +90,7 @@ function WbtCustomerTable() {
 
 	//Delete users
 
-	const deleteSeletedUsers = (emails) => {
+	const deleteSelectedUsers = (emails) => {
 		console.log('deleted all', emails);
 	}
 
