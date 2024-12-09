@@ -107,9 +107,9 @@ function WbtDashboardHeader() {
 						variant="contained"
 						color="secondary"
 						startIcon={<FuseSvgIcon size={20}>heroicons-solid:document</FuseSvgIcon>}
-						href='/wbt-survey'
+						href='/wbt-question'
 					>
-						Show Survey
+						Show Questionare
 					</Button>
 				</div>
 			</div>

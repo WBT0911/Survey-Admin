@@ -55,7 +55,7 @@ function UserNavbarHeader() {
 					}}
 
 					className="avatar uppercase h-96 w-96 text-32 font-bold"
-					style={{width : '14.6rem', height : '14.6rem'}}
+					style={{width : '9.6rem', height : '9.6rem', marginTop : '2rem'}}
 					src={csirPng}
 					alt='avatar'
 				>

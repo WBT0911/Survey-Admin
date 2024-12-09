@@ -31,28 +31,28 @@ if(localStorage.getItem('currentUserData')){
 				url: '/wbt-dashboard',
 			},
 			{
-				id: 'manage',
-				title: 'Manage',
-				subtitle: 'Manage all users',
-				type: 'item',
-				icon: 'heroicons-outline:cube',
-				url: '/wbt-manage',
-			},
-			{
-				id: 'survey',
-				title: 'Survey',
-				subtitle: 'Survey with all users',
-				type: 'item',
-				icon: 'heroicons-outline:document',
-				url: '/wbt-survey',
-			},
-			{
 				id: 'question',
 				title: 'Questionare',
 				subtitle: 'Building blocks of the UI & UX',
 				type: 'item',
 				icon: 'heroicons-outline:collection',
 				url: '/wbt-question',
+			},
+			{
+				id: 'manage',
+				title: 'Supervisor',
+				subtitle: 'Manage all users',
+				type: 'item',
+				icon: 'heroicons-outline:cube',
+				url: '/wbt-manage',
+			},
+			{
+				id: 'customer',
+				title: 'Customers',
+				subtitle: 'Manage all customers',
+				type: 'item',
+				icon: 'heroicons-outline:users',
+				url: '/wbt-customer',
 			}
 		];
 		

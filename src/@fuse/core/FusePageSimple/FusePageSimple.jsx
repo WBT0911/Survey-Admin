@@ -74,7 +74,8 @@ const Root = styled('div')(({ theme, ...props }) => ({
 		flex: '1 1 auto',
 		alignItems: 'start',
 		minHeight: 0,
-		overflowY: 'auto'
+		overflowY: 'auto',
+		paddingTop : '15px'
 	},
 	'& .FusePageSimple-sidebarWrapper': {
 		overflow: 'hidden',

@@ -11,7 +11,7 @@ import { useDeleteECommerceProductsMutation, useGetECommerceProductsQuery } from
 import { devApiLink } from 'app/configs/urlConfig';
 import axios from 'axios';
 
-function WbtManageTable() {
+function WbtCustomerTable() {
 	const { data: products, isLoading } = useGetECommerceProductsQuery();
 	const [removeProducts] = useDeleteECommerceProductsMutation();
 	
@@ -54,9 +54,29 @@ function WbtManageTable() {
 	const [allUsersData, setAllUsersData] = useState([]);
 
 	const fetchAllUsersData = () => {
-		axios.post(`${devApiLink}/user/get/alluser`).then((response) => {
-			setAllUsersData(response.data);
-		});
+		// axios.post(`${devApiLink}/user/get/alluser`).then((response) => {
+		// 	setAllUsersData(response.data);
+		// });
+		setAllUsersData([
+			{
+				id : 1,
+				domain : 'hello',
+				email : 'hello@gmail.com',
+				name : 'hello',
+				official : 'hello',
+				phone : '1234567890',
+				birthday : '2005-09-11'
+			},
+			{
+				id : 2,
+				domain : 'hello',
+				email : 'hello@gmail.com',
+				name : 'hello',
+				official : 'hello',
+				phone : '1234567890',
+				birthday : '2005-09-11'
+			}
+		])
 	};
 
 	useEffect(() => {
@@ -132,4 +152,4 @@ function WbtManageTable() {
 	);
 }
 
-export default WbtManageTable;
+export default WbtCustomerTable;

@@ -12,18 +12,10 @@ import WbtQuestionConfig from '../main/wbt-question/WbtQuestionConfig';
 import WbtSurveyConfig from '../main/wbt-survey/WbtSurveyConfig';
 import WbtProfileConfig from '../main/wbt-profile/WbtProfileConfig';
 import Wbt404Config from 'app/main/wbt-404/Wbt404Config';
+import WbtCustomerConfig from 'app/main/wbt-customer/WbtCustomerConfig';
 
-
-// import SignOutConfig from '../main/sign-out/SignOutConfig';
-// import PagesConfigs from '../main/pages/pagesConfigs';
-// import DashboardsConfigs from '../main/dashboards/dashboardsConfigs';
-// import AppsConfigs from '../main/apps/appsConfigs';
-// import UserInterfaceConfigs from '../main/user-interface/UserInterfaceConfigs';
-// import DocumentationConfig from '../main/documentation/DocumentationConfig';
-// import authRoleExamplesConfigs from '../main/auth/authRoleExamplesConfigs';
 
 const routeConfigs = [
-	
 	
 	SignInConfig,
 	SignUpConfig,
@@ -33,24 +25,10 @@ const routeConfigs = [
 	WbtQuestionConfig,
 	WbtSurveyConfig,
 	WbtProfileConfig,
-	Wbt404Config
+	Wbt404Config,
+	WbtCustomerConfig
 	
-	
-	// SignOutConfig,
-	// DocumentationConfig,
-	// ...PagesConfigs,
-	// ...UserInterfaceConfigs,
-	
-	// ...DashboardsConfigs,
-	
-
-	
-	// ...AppsConfigs,
-	// ...authRoleExamplesConfigs
 ];
-/**
- * The routes of the application.
- */
 const routes = [
 	...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
 	{
