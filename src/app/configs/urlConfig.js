@@ -1,0 +1,1 @@
+export const devApiLink = "http://18.198.254.127:7777/v1/api";
