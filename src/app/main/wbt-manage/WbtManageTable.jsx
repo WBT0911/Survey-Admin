@@ -72,6 +72,11 @@ function WbtManageTable() {
 
 	const deleteSeletedUsers = (emails) => {
 		console.log('deleted all', emails);
+		axios.post(`${devApiLink}/user/deletes`, {emails : emails}
+		).then((response) => {
+			console.log(response);
+			setAllUsersData(allUsersData.filter((user) => !emails.includes(user.email)));
+		});
 	}
 
 	const deleteSeletedUser = (email) => {
@@ -118,7 +123,7 @@ function WbtManageTable() {
 							size="small"
 							onClick={() => {
 								const emails = selectedRows.map(row => row.original.email); // Get selected emails
-                                deleteSelectedUsers(emails);
+                                deleteSeletedUsers(emails);
 							}}
 							className="flex shrink min-w-40 ltr:mr-8 rtl:ml-8"
 							color="secondary"

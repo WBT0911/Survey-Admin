@@ -21,6 +21,7 @@ import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TaskPrioritySelector from './TaskPrioritySelector';
+import { devApiLink } from 'app/configs/urlConfig';
 import FormActionsMenu from './FormActionsMenu';
 import {
 	useCreateTasksItemMutation,
@@ -32,6 +33,7 @@ import SectionModel from '../models/SectionModel';
 import TaskModel from '../models/TaskModel';
 import ContactEmailSelector from './Option/ContactEmailSelector';
 import ContactModel from '../models/ContactModel';
+import axios from 'axios';
 /**
  * Form Validation Schema
  */
@@ -69,23 +71,27 @@ function WbtQuestionAddForm() {
 	const [createTask] = useCreateTasksItemMutation();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const [questionData, setQuestionData] = useState([]);
+	const [currentPage, setCurrentPage] = useState(0);
+	const [heading, setHeading] = useState('');
+	const [title, setTitle] = useState('');
+	const [tagType, setTagType] = useState('Text');
 
 
-	const { control, watch, reset, handleSubmit, formState } = useForm({
-		mode: 'onChange',
-		resolver: zodResolver(schema)
-	});
-
-
-    // const { control, watch, reset, handleSubmit, formState } = useForm({
-	// 	mode: 'all',
+	// const { control, watch, reset, handleSubmit, formState } = useForm({
+	// 	mode: 'onChange',
 	// 	resolver: zodResolver(schema)
 	// });
+
+
+    const { control, watch, reset, handleSubmit, formState } = useForm({
+		mode: 'all',
+		resolver: zodResolver(schema)
+	});
 
 	const { isValid, dirtyFields, errors } = formState;
 	const form = watch();
 
-    const [tagType, setTagType] = useState('Text');
 
     const tagsData = [
         {
@@ -124,22 +130,42 @@ function WbtQuestionAddForm() {
 	}, [task, reset, taskId, taskType]);
 
 
+	const fetchSurveyData = async () => {
+		try {
+			const response = await fetch('/survey.json');
+			if(!response.ok){
+				throw new Error ('Network response was not ok');
+			}
+			const data = await response.json();
+			setQuestionData(data);
+		}
+		catch(error){
+			console.log("failed error ", error);
+		}
+	}
+
     useEffect(() => {
-			reset(ContactModel({}));
+		reset(ContactModel({}));
+		fetchSurveyData();
 	}, []);
 
 	/**
 	 * Form Submit
 	 */
 	function onSubmit(data) {
-		updateTask(data);
+
+		console.log(data);
+		alert('first');
+		
 	}
 
 	function onSubmitNew(data) {
+		alert('first');
+		console.log("data : ", data);
 		createTask(data)
 			.unwrap()
-			.then((newTask) => {
-				navigate(`/wbt-question/${newTask?.id}`);
+			.then(() => {
+				alert('success');
 			})
 			.catch((rejected) => {
 				dispatch(showMessage({ message: `Error creating task item ${rejected}`, variant: 'error' }));
@@ -156,6 +182,41 @@ function WbtQuestionAddForm() {
 
 	if (_.isEmpty(form)) {
 		return <FuseLoading />;
+	}
+
+	const addQuestionFormFunc = () => {
+		const tempLabelData = watch('emails');
+		let tempDataType;
+
+		if(tagType === 'Text'){
+			tempDataType = 'inputSmallText';
+		}
+		else if(tagType === 'Radio'){
+			tempDataType = 'verticalRadio';
+		}
+		else if(tagType === 'Checkbox'){
+			tempDataType = 'verticalCheckbox';
+		}
+
+		const middleTempLabelData = tempLabelData?.map(data => data.label) || [];
+
+		const createQuestionData = {
+			heading: heading,
+			dataType: tempDataType,
+			dataTitle : title,
+			required : true,
+			dataContent : middleTempLabelData
+		}
+	
+		axios
+			.post(`${devApiLink}/questionare/create`, {page : currentPage, content : createQuestionData})
+			.then((response) => {
+				console.log(response.data);
+			})
+			.catch((err) => console.log(err));
+
+
+
 	}
 
 	return (
@@ -186,6 +247,80 @@ function WbtQuestionAddForm() {
 					</div>
 				</div>
 
+				<div className="flex w-full space-x-16 mt-32 mb-16 items-center">
+
+                    <Controller
+                        control={control}
+                        name="current"
+                        render={({ field: { onChange, value } }) => (
+                            <Select
+                                id="current"
+                                className="w-full"
+                                value={currentPage}
+                                onChange={(event) => {
+									onChange(event.target.value);
+									setCurrentPage(event.target.value);
+									setTitle('');
+									setHeading('');
+									setTagType('Text');
+                                }}
+                                fullWidth
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Input Type"
+                                        placeholder="Input Type"
+                                    />
+                                )}
+                            >
+
+								{
+									questionData.map((_, index) => {
+										return (
+											<MenuItem key={index} value={index}>
+												Page {index + 1}
+											</MenuItem>
+										);
+									})
+								}
+								<MenuItem key={questionData.length} value={questionData.length}>
+									Page {questionData.length + 1} (New)
+								</MenuItem>
+
+                            </Select>
+                        )}
+                    />
+				</div>
+
+				{
+					questionData.length.toString() === currentPage.toString() &&
+
+					<Controller
+						control={control}
+						name="heading"
+						render={({ field }) => (
+							<TextField
+								className="mt-32 max-h-auto"
+								{...field}
+								label={`Question Heading`}
+								placeholder="Question Heading"
+								id="heading"
+								variant="outlined"
+								fullWidth
+								multiline
+								minRows={3}
+								maxRows={10}
+								value={heading}
+								onChange={(event) => {
+									setHeading(event.target.value);
+								}}
+							/>
+						)}
+					/>
+
+				}
+
+
 				<Controller
 					control={control}
 					name="title"
@@ -196,48 +331,19 @@ function WbtQuestionAddForm() {
 							label={`Question title`}
 							placeholder="Question title"
 							id="title"
-							error={!!errors.title}
-							helperText={errors?.title?.message}
 							variant="outlined"
 							fullWidth
 							multiline
 							minRows={3}
 							maxRows={10}
-						/>
-					)}
-				/>
-                
-				<Controller
-					control={control}
-					name="notes"
-					render={({ field }) => (
-						<TextField
-							className="mt-32"
-							{...field}
-							label="Description"
-							placeholder="Description"
-							id="notes"
-							error={!!errors.notes}
-							helperText={errors?.notes?.message}
-							variant="outlined"
-							fullWidth
-							multiline
-							minRows={5}
-							maxRows={10}
-							InputProps={{
-								className: 'max-h-min h-min items-start',
-								startAdornment: (
-									<InputAdornment
-										className="mt-16"
-										position="start"
-									>
-										<FuseSvgIcon size={20}>heroicons-solid:menu-alt-2</FuseSvgIcon>
-									</InputAdornment>
-								)
+							value={title}
+							onChange={(event) => {
+								setTitle(event.target.value);
 							}}
 						/>
 					)}
 				/>
+                
 				
 				<div className="flex w-full space-x-16 mt-32 mb-16 items-center">
 
@@ -248,7 +354,7 @@ function WbtQuestionAddForm() {
                             <Select
                                 id="tags"
                                 className="w-full"
-                                value={value}
+                                value={tagType}
                                 onChange={(event) => {
                                     onChange(event.target.value);
                                     setTagType(event.target.value);
@@ -306,8 +412,7 @@ function WbtQuestionAddForm() {
 						className="ml-8"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleSubmit(onSubmitNew)}
+						onClick={addQuestionFormFunc}
 					>
 						Create
 					</Button>

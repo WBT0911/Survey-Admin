@@ -8,7 +8,7 @@ import { ContactEmailModel } from '../../models/ContactModel';
  * The contact email selector.
  */
 const ContactEmailSelector = forwardRef((props, ref) => {
-	const { value, onChange, className, tagType } = props;
+	const { value, onChange, className, tagType, helpFun } = props;
 	return (
 		<div
 			className={clsx('w-full', className)}

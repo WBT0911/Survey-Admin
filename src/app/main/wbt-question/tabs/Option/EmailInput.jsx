@@ -53,34 +53,6 @@ function EmailInput(props) {
 			onChange={handleSubmit(onSubmit)}
 		>
 			
-
-			{
-				tagType === 'Text' && 
-
-				<Controller
-					control={control}
-					name="email"
-					render={({ field }) => (
-						<TextField
-							{...field}
-							label="Text"
-							placeholder="Text"
-							variant="outlined"
-							fullWidth
-							error={!!errors.email}
-							helperText={errors?.email?.message}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<FuseSvgIcon size={20}>heroicons-solid:document</FuseSvgIcon>
-									</InputAdornment>
-								)
-							}}
-						/>
-					)}
-				/>
-			}
-			
 			{
 				tagType === 'Radio' &&
 					<FormControl component="fieldset" error={!!errors.options}>
@@ -140,7 +112,7 @@ function EmailInput(props) {
 				render={({ field }) => (
 					<TextField
 						{...field}
-						label="Label"
+						label={tagType === 'Text' ? "Placeholder" :"Label"}
 						placeholder="Label"
 						variant="outlined"
 						fullWidth
